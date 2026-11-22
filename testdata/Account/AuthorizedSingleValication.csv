@@ -1,0 +1,6 @@
+FieldName,Value,ExpectedStatusCode,ExpectedMessage
+userName,null,404,User not found
+userName,"",404,User not found
+userName,"missing",404,User not found
+password,null,404,User not found
+password,"",404,User not found
