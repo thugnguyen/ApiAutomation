@@ -1,4 +1,6 @@
 import { Request } from './Request';
+import { JsonUtils } from './JsonUtils';
+import * as fs from 'fs';
 export interface ApiResponse<Tresponse> {
     status: number;
     responseBody?: Tresponse;
@@ -18,5 +20,23 @@ export class RequestUtils {
             status: statusCode,
             responseBody: await response.json()
         };
+    }
+
+    /**
+     * 
+     * @param requestBodyFilePath: /Users/thunt/Tài liệu/0AutomationClass/2Projects/0Git/ApiAutomation/testdata/Account/AuthorizedRequestBody.json
+     * @param key 
+     * @param value 
+     * @returns 
+     */
+    updateRequestBody(orignalRequestFilePath: string, key: string, value: string): string {
+        let result: string = "";
+        const copyRequestFilePath = orignalRequestFilePath.replace('.json', '_copy.json');
+        const jsonUtils: JsonUtils = new JsonUtils();
+        jsonUtils.copyFile(orignalRequestFilePath, copyRequestFilePath);
+        const copyRequestData = jsonUtils.readDataFromJson(copyRequestFilePath);
+        result = jsonUtils.changeValueByKey(copyRequestData, key, value);
+        fs.writeFileSync(copyRequestFilePath, result);
+        return result;
     }
 }
